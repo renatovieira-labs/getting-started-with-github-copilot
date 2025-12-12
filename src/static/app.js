@@ -50,7 +50,40 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
           details.participants.forEach((p) => {
             const li = document.createElement("li");
-            li.textContent = p;
+            const participantSpan = document.createElement("span");
+            participantSpan.className = "participant-name";
+            participantSpan.textContent = p;
+            li.appendChild(participantSpan);
+
+            const deleteBtn = document.createElement("button");
+            deleteBtn.className = "delete-participant-btn";
+            deleteBtn.innerHTML = "&#x2717;";
+            deleteBtn.title = "Remove participant";
+            deleteBtn.type = "button";
+            deleteBtn.addEventListener("click", async (e) => {
+              e.preventDefault();
+              try {
+                const response = await fetch(
+                  `/activities/${encodeURIComponent(name)}/remove?email=${encodeURIComponent(p)}`,
+                  { method: "POST" }
+                );
+                if (response.ok) {
+                  li.style.opacity = "0.5";
+                  li.remove();
+                  if (ul.children.length === 0) {
+                    const noParticipants = document.createElement("li");
+                    noParticipants.className = "no-participants";
+                    noParticipants.textContent = "No participants yet";
+                    ul.appendChild(noParticipants);
+                  }
+                } else {
+                  console.error("Failed to remove participant");
+                }
+              } catch (error) {
+                console.error("Error removing participant:", error);
+              }
+            });
+            li.appendChild(deleteBtn);
             ul.appendChild(li);
           });
         }
@@ -92,6 +125,8 @@ document.addEventListener("DOMContentLoaded", () => {
         messageDiv.textContent = result.message;
         messageDiv.className = "success";
         signupForm.reset();
+        // Refresh activities list to show the new participant
+        await fetchActivities();
       } else {
         messageDiv.textContent = result.detail || "An error occurred";
         messageDiv.className = "error";
