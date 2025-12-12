@@ -74,6 +74,41 @@ section h3 {
   margin-bottom: 8px;
 }
 
+/* Participants section styling */
+.participants-section {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed #eee;
+}
+
+.participants-title {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.participants-list {
+  list-style: disc;
+  margin-left: 20px;
+  color: #555;
+  font-size: 14px;
+  max-height: 120px;
+  overflow: auto;
+  padding-right: 6px;
+}
+
+.participants-list li {
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+
+/* Subtle style for "no participants" */
+.participants-list .no-participants {
+  font-style: italic;
+  color: #999;
+}
+
 .form-group {
   margin-bottom: 15px;
 }
